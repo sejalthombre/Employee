@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Employee</title>
+</head>
+
+<body>
+
+<h2>Edit Employee</h2>
+
+<form method="POST" enctype="multipart/form-data">
+
+    {% csrf_token %}
+
+    <label>Name</label>
+    <input type="text" name="name" value="{{ emp.name }}">
+
+    <br><br>
+
+    <label>DOB</label>
+    <input type="date" name="dob" value="{{ emp.dob|date:'Y-m-d' }}">
+
+    <br><br>
+
+    <label>Photo</label>
+    <input type="file" name="upload_photo">
+
+    <br><br>
+
+    <button type="submit">Update</button>
+
+</form>
+
+</body>
+</html>

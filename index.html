@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Employee Details</title>
+
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 80%;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 10px;
+            text-align: center;
+        }
+
+        img {
+            width: 80px;
+            height: 80px;
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 20%;
+            left: 35%;
+            background: white;
+            border: 1px solid black;
+            padding: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+<h2>
+    Employee Details
+    <button onclick="openPopup()">+</button>
+</h2>
+
+<table>
+    <tr>
+        <th>Emp Name</th>
+        <th>Date Of Birth</th>
+        <th>Photo</th>
+        <th>Action</th>
+    </tr>
+
+    {% for emp in employees %}
+    <tr>
+        <td>{{ emp.name }}</td>
+        <td>{{ emp.dob }}</td>
+
+        <td>
+            {% if emp.photo %}
+            <img src="data:image/jpeg;base64,{{ emp.photo }}">
+            {% endif %}
+        </td>
+
+        <td>
+            <a href="/edit/{{ emp.id }}/">Edit</a>
+            <a href="/delete/{{ emp.id }}/">Delete</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+<br><br>
+
+<button onclick="viewPopup()">View Employee Details</button>
+
+<!-- ADD POPUP -->
+
+<div class="popup" id="popup">
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <button type="submit">Save</button>
+        <button type="button" onclick="closePopup()">Close</button>
+    </form>
+
+</div>
+
+<!-- VIEW POPUP -->
+
+<div class="popup" id="viewbox">
+
+    {% for emp in employees %}
+
+        {% if emp.photo %}
+        <img src="data:image/jpeg;base64,{{ emp.photo }}">
+        {% endif %}
+
+        <h3>{{ emp.name }}</h3>
+        <p>{{ emp.dob }}</p>
+        <hr>
+
+    {% endfor %}
+
+    <button onclick="closeView()">Close</button>
+
+</div>
+
+<script>
+
+function openPopup() {
+    document.getElementById("popup").style.display = "block";
+}
+
+function closePopup() {
+    document.getElementById("popup").style.display = "none";
+}
+
+function viewPopup() {
+    document.getElementById("viewbox").style.display = "block";
+}
+
+function closeView() {
+    document.getElementById("viewbox").style.display = "none";
+}
+
+</script>
+
+</body>
+</html>
